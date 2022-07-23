@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Base Inheretence
+// model <name> {
+// id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+// name   String?
+// domain String?
+
+// type    String?
+// email   String?
+// contact String?
+// website String?
+// logo    String?
+
+// order Int @default(999999)
+
+// status Boolean @default(true)
+// active Boolean @default(true)
+
+// creatorId String?
+// updaterId String?
+
+// created DateTime @default(now())
+// updated DateTime @updatedAt
+
+// creator User? @relation("<name>Creator", fields: [creatorId], references: [id])
+// updater User? @relation("<name>Updater", fields: [updaterId], references: [id])
+// }
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  username    String  @unique
+  first_name  String?
+  last_name   String?
+  email       String?
+  phone       String?
+  password    String?
+  dob         String?
+  description String?
+  image       String?
+  type        String?
+
+  order  Int     @default(999999)
+  status Boolean @default(false)
+  active Boolean @default(true)
+
+  domain  String? @db.Uuid
+  creator String? @db.Uuid
+  updater String? @db.Uuid
+
+  created DateTime  @default(now())
+  updated DateTime? @updatedAt
+
+  // User References
+  creatorId User?   @relation("Creator", fields: [creator], references: [id])
+  updatorId User?   @relation("Updater", fields: [updater], references: [id])
+  domainId  Domain? @relation("UserDomainId", fields: [domain], references: [id])
+
+  // User Relations
+  create User[] @relation("Creator")
+  update User[] @relation("Updater")
+
+  // Domain Relation
+  domainCreator Domain[] @relation("DomianCreator")
+  domainUpdator Domain[] @relation("DomianUpdater")
+  @@map("user")
+}
+
+model Domain {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  name   String?
+  domain String? @unique
+
+  type        String?
+  email       String?
+  phone       String?
+  website     String?
+  image       String?
+  description String?
+
+  order Int @default(999999)
+
+  status Boolean @default(true)
+  active Boolean @default(true)
+
+  creator String? @db.Uuid
+  updater String? @db.Uuid
+
+  created DateTime  @default(now())
+  updated DateTime? @updatedAt
+
+  // References
+  creatorId User? @relation("DomianCreator", fields: [creator], references: [id])
+  updaterId User? @relation("DomianUpdater", fields: [updater], references: [id])
+
+  // Realtions
+  UserId User[] @relation("UserDomainId")
+  @@map("domain")
+}

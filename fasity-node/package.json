@@ -1,0 +1,40 @@
+{
+  "name": "fasity-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "dev": "nodemon index.ts",
+    "start": "node ./build/index.js",
+    "migrate": "npx prisma migrate dev --name init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://kuru-veer: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@github.com/trihox/fastify-node.git"
+  },
+  "author": "veer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trihox/fastify-node/issues"
+  },
+  "homepage": "https://github.com/trihox/fastify-node#readme",
+  "dependencies": {
+    "@fastify/jwt": "^6.2.1",
+    "@fastify/swagger": "^7.4.1",
+    "@fastify/type-provider-json-schema-to-ts": "^2.0.0",
+    "@prisma/client": "^4.0.0",
+    "fastify": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "nodemon": "^2.0.19",
+    "prisma": "^4.0.0",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "prisma": {
+    "schema": "src/db/prisma/schema.prisma"
+  }
+}
